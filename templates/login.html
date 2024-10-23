@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <title>login</title>
+    
+</head>
+<body>
+    <form action="{{ url_for('login') }}" method="POST">
+        <input type="text" placeholder="Enter username" name="user">
+        <button>Join</button>
+    </form>
+    <script src="/static/js/scripts.js"></script>
+</body>
+</html>

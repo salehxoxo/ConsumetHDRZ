@@ -1,0 +1,328 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.results-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.result-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 200px;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.2s;
+}
+
+.result-card img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+.result-card h2 {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #444;
+}
+
+.result-card p {
+    font-size: 14px;
+    color: #666;
+}
+
+.result-card a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.result-card a:hover {
+    background-color: #0056b3;
+}
+
+.result-card:hover {
+    transform: scale(1.05);
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    background-color: #333;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.navbar a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    text-align: center;
+}
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+.navbar a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+
+
+
+
+
+/* The chatbox container */
+/* #chat-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 300px;
+    height: 400px;
+    background-color: rgba(0, 0, 0, 0.7); 
+    color: white;
+    overflow-y: auto;
+    z-index: 9999; 
+    border-radius: 10px;
+    padding: 10px;
+    display: none; 
+} */
+
+#test {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 300px;
+    height: 400px;
+    color: white;
+    font-size: x-large;
+    overflow-y: auto;
+    z-index: 9999; /* Ensure it stays on top */
+    border-radius: 10px;
+    padding: 10px;
+    display: none; 
+}
+
+/* #videoPlayer{
+    z-index: -1;
+} */
+
+/* Chatbox header styling */
+/* #chat-header {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 10px;
+} */
+
+/* Chatbox messages styling */
+/* #chat-messages {
+    height: 300px;
+    overflow-y: scroll;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+} */
+
+/* Input area */
+/* #chat-input-area {
+    display: flex;
+    gap: 10px;
+} */
+
+/* #chat-input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+} */
+
+/* #send-btn {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+} */
+
+
+
+
+
+
+.text-outline {
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;  
+}
+
+#chat {
+  height: 0;
+  overflow-y: scroll;
+}
+
+video::-webkit-media-controls-fullscreen-button {
+  display: none;
+}
+
+#video-chat-container:-webkit-full-screen {
+  --bs-gutter-x: 0;
+}
+
+#video-chat-container:fullscreen {
+  --bs-gutter-x: 0;
+}
+
+#video-chat-container:-webkit-full-screen video {
+  height: 100vh;
+  width: 100vw;
+}
+
+#video-chat-container:fullscreen video {
+  height: 100vh;
+  width: 100vw;
+}
+
+#top-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#bottom-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+#video-chat-container:-webkit-full-screen #top-overlay,
+#video-chat-container:-webkit-full-screen #bottom-overlay {
+  position: fixed;
+}
+
+#video-chat-container:fullscreen #top-overlay,
+#video-chat-container:fullscreen #bottom-overlay {
+  position: fixed;
+}
+
+#video-chat-container:-webkit-full-screen #play-btn,
+#video-chat-container:-webkit-full-screen #mute-btn {
+  background: rgba(0,0,0,0.3);
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+#video-chat-container:fullscreen #play-btn,
+#video-chat-container:fullscreen #mute-btn {
+  background: rgba(0,0,0,0.3);
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+#video-chat-container:-webkit-full-screen #chat {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 400px;
+}
+
+#video-chat-container:fullscreen #chat {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 400px;
+}
+
+#chat-container {
+  height: 100%;
+}
+
+#video-chat-container:-webkit-full-screen #chat-container {
+  height: 80vh;
+  position: fixed;
+  top: calc(50vh - (80vh / 2));
+  right: 10px;
+  color: #ffffff;
+}
+
+#video-chat-container:fullscreen #chat-container {
+  height: 80vh;
+  position: fixed;
+  top: calc(50vh - (80vh / 2));
+  right: 10px;
+  color: #ffffff;
+}
+
+@media (max-width: 575.98px) {
+
+  #video-chat-container:-webkit-full-screen #chat {
+    max-width: 200px;
+    width: 200px;
+  }
+
+  #video-chat-container:fullscreen #chat {
+    max-width: 200px;
+    width: 200px;
+  }
+
+  #video-chat-container:-webkit-full-screen #chat-input-container {
+    width: 200px;
+  }
+
+  #video-chat-container:fullscreen #chat-input-container {
+    width: 200px;
+  }
+}
+
+#video-chat-container:-webkit-full-screen #chat-input,
+#video-chat-container:-webkit-full-screen #submit-chat {
+  background: rgba(0,0,0,0.3);
+  color: #ffffff;
+  border: 1px solid rgb(var(--bs-white-rgb));
+}
+
+#video-chat-container:fullscreen #chat-input,
+#video-chat-container:fullscreen #submit-chat{
+  background: rgba(0,0,0,0.3);
+  color: #ffffff;
+  border: 1px solid rgb(var(--bs-white-rgb));
+}
+
+#video-chat-container:-webkit-full-screen #chat-input::placeholder {
+  color: #ffffff;
+}
+
+#video-chat-container:fullscreen #chat-input::placeholder {
+  color: #ffffff;
+}
+
+#seek-bar {
+    width: 100%; /* Full width to fill the available space */
+    height: 10px; /* Increase the height for better usability */
+    cursor: pointer; /* Change cursor to pointer for better UX */
+}
+
+.timestamp {
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    color: #fff; /* White text color */
+    padding: 2px 5px; /* Padding for the timestamp */
+    border-radius: 5px; /* Rounded corners */
+    transform: translateY(-100%); /* Position above the seek bar */
+    /* transform: translateX(50%); */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+  

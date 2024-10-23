@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Search Results</title>
+{% endblock %}
+
+{% block content %}
+    <div class="search-bar">
+        <form action="{{ url_for('movie_page') }}" method="POST">
+            <input type="text" name="query" placeholder="Search Movies or TV Shows..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="results-container">
+        {% if results %}
+            {% for result in results['results'] %}
+            <div class="result-card">
+                {% if result['poster_path'] %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ result['poster_path'] }}" alt="{{ result['title'] or result['name'] }}">
+                {% else %}
+                    <img src="/static/images/placeholder.png" alt="No Image Available">
+                {% endif %}
+                <h2>{{result['name'] }}</h2>
+                <p><strong>Release Date:</strong> {{result['first_air_date'] }}</p>
+                <p><strong>Language:</strong> {{ result['original_language'] | upper }}</p>
+                <p><strong>Media Type:</strong> {{ result['media_type'] | capitalize }}</p>
+                <a href="{{ url_for('the_room2', movie_id=result['id'], movie_name=result['name'] or result['title'], media_type=result['media_type'], movie_year=result['first_air_date'] or result['release_date'], genres=result['genre_ids'] | join_genres ) }}">Watch Now</a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

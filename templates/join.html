@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>join room</title>
+{% endblock %}
+
+{% block content %}
+    <form id="join-room-form" action="{{ url_for('join_roomm') }}" method="POST">
+        <input type="text" id="query" name="query" placeholder="Enter code..." required>
+        <button type="submit">Join room</button>
+    </form>
+{% endblock %}
