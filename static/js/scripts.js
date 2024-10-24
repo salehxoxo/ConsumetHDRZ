@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     isPlaying: !videoElement.paused
                 });
             // }
-        }, 1000);
+        }, 5000);
 
 
 
