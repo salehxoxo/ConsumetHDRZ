@@ -12,7 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode='gevent')
 
 # Database setup
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///room_data.db'
