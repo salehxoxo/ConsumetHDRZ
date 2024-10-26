@@ -60,6 +60,7 @@ const togglePlayback = (evt) => {
 };
 
 const forcePause = (evt) => {
+    console.log('forcepause');
     const btn = document.getElementById('play-btn-icon');
     const video = document.getElementById('videoPlayer');
     video.pause();
@@ -68,6 +69,7 @@ const forcePause = (evt) => {
 };
 
 const forcePlay = (evt) => {
+    console.log('forceplay');
     const btn = document.getElementById('play-btn-icon');
     const video = document.getElementById('videoPlayer');
     video.play();
