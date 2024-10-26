@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 socket.emit('play_pause_stop', { action: 'pause', room_code: room_code2 });
                 videoElement2.currentTime = data.currentTime;
                 console.log('Please wait 3 seconds');
-                sleep(3000); // Wait for 2 seconds
+                sleep(30000); // Wait for 2 seconds
                 socket.emit('play_pause_stop', { action: 'play', room_code: room_code2 });
                 // videoElement2.pause();
                 // if (data.isPlaying) {
