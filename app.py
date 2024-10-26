@@ -1,5 +1,5 @@
-import eventlet
-eventlet.monkey_patch()
+import gevent.monkey
+gevent.monkey.patch_all()
 
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import requests
@@ -10,7 +10,6 @@ import string
 # import redis
 from flask_sqlalchemy import SQLAlchemy
 import json
-import time
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -173,8 +172,6 @@ def the_room(anime_id):
 
     episodes = anime_info.get('episodes', [])
     
-    time.sleep(10)
-    
     # Fetch the sources for the first episode to get available resolutions
     urll = f'https://consume2.vercel.app/anime/gogoanime/watch/{anime_id}-episode-1'
     response = requests.get(urll, verify=False)
@@ -203,7 +200,7 @@ def the_room(anime_id):
         db.session.commit()
 
     room = session.get('room_code')
-    # socketio.emit('video_src_set', {'videoSrc': Link, 'room_code': room_code}, room=room)
+    socketio.emit('video_src_set', {'videoSrc': Link, 'room_code': room_code}, room=room)
 
     available_resolutions_json = json.dumps(available_resolutions)
     Moov = 0
@@ -350,7 +347,7 @@ def handle_join_room(data):
     room_members = socketio.server.manager.rooms['/'].get(room, [])
     number_of_users = len(room_members)
 
-    # emit('message', {'user': 'System', 'message': f'{username} has joined the room. ({number_of_users} users in the room)'}, to=room)
+    emit('message', {'user': 'System', 'message': f'{username} has joined the room. ({number_of_users} users in the room)'}, to=room)
     # print(f"{username} joined room {room}, total users: {number_of_users}")
 
 
