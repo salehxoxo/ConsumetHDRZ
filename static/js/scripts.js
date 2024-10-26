@@ -13,6 +13,10 @@ var availableResolutions = {};
 let seekInProgress2;
 let seekInProgress;
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
+
 const toggleChat = () => {
     const noti2 = document.getElementById('chat-toggle-btn');
     const chatContainer = document.getElementById('chat-container0');
@@ -53,6 +57,22 @@ const togglePlayback = (evt) => {
       btn.classList.add('bi-play');
       btn.classList.remove('bi-pause');
     }
+};
+
+const forcePause = (evt) => {
+    const btn = document.getElementById('play-btn-icon');
+    const video = document.getElementById('videoPlayer');
+    video.pause();
+    btn.classList.add('bi-play');
+    btn.classList.remove('bi-pause');
+};
+
+const forcePlay = (evt) => {
+    const btn = document.getElementById('play-btn-icon');
+    const video = document.getElementById('videoPlayer');
+    video.play();
+    btn.classList.remove('bi-play');
+    btn.classList.add('bi-pause');
 };
 
 const toggleMute = (evt) => {
@@ -347,14 +367,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         socket.on('sync_update', function(data) {
             var timeDiff = Math.abs(videoElement2.currentTime - data.currentTime);
-            if (timeDiff > 0.1) {  // If more than 1 second out of sync
-                videoElement2.currentTime = data.currentTime + 0.15;
+            if (timeDiff > 0.3) {  // If more than 1 second out of sync
+                socket.emit('play_pause_stop', { action: 'pause', room_code: room_code2 });
+                videoElement2.currentTime = data.currentTime;
+                sleep(1000); // Wait for 2 seconds
+                socket.emit('play_pause_stop', { action: 'play', room_code: room_code2 });
                 // videoElement2.pause();
-                if (data.isPlaying) {
-                    videoElement2.play();
-                } else {
-                    videoElement2.pause();
-                }
+                // if (data.isPlaying) {
+                //     videoElement2.play();
+                // } else {
+                //     videoElement2.pause();
+                // }
             }
         });
 
@@ -445,6 +468,12 @@ document.addEventListener('DOMContentLoaded', function() {
 socket.on('play_pause_stop', function(data) {
     if (data.action === 'playpause') {
         togglePlayback(); 
+    }
+    if (data.action === 'pause') {
+        forcePause(); 
+    }
+    if (data.action === 'play') {
+        forcePlay(); 
     }
     if (data.action === 'fs') {
         toggleFullScreen();
