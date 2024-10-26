@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     isPlaying: !videoElement.paused
                 });
             // }
-        }, 5000);
+        }, 6000);
 
 
 
