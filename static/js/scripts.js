@@ -230,15 +230,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // socket.emit('sync_room_event');
 
         // Sync functionality every 5 seconds
-        setInterval(function() {
-            // if (!seekInProgress && !seekInProgress2) {  // Only sync if seeking is not in progress
-                socket.emit('sync_request', {
-                    room_code: room_code6,
-                    currentTime: videoElement.currentTime,
-                    isPlaying: !videoElement.paused
-                });
-            // }
-        }, 5000);
+        // setInterval(function() {
+        //     // if (!seekInProgress && !seekInProgress2) {  // Only sync if seeking is not in progress
+        //         socket.emit('sync_request', {
+        //             room_code: room_code6,
+        //             currentTime: videoElement.currentTime,
+        //             isPlaying: !videoElement.paused
+        //         });
+        //     // }
+        // }, 5000);
 
 
 
