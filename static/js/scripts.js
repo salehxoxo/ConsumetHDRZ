@@ -372,8 +372,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (timeDiff > 0.3) {  // If more than 1 second out of sync
                 socket.emit('play_pause_stop', { action: 'pause', room_code: room_code2 });
                 videoElement2.currentTime = data.currentTime;
-                sleep(1000); // Wait for 2 seconds
-                socket.emit('play_pause_stop', { action: 'play', room_code: room_code2 });
+                // sleep(1000); // Wait for 2 seconds
+                // socket.emit('play_pause_stop', { action: 'play', room_code: room_code2 });
                 // videoElement2.pause();
                 // if (data.isPlaying) {
                 //     videoElement2.play();
