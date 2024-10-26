@@ -369,13 +369,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         socket.on('sync_update', async function(data) {
             var timeDiff = Math.abs(videoElement2.currentTime - data.currentTime);
-            if (timeDiff > 0.3) {  // If more than 1 second out of sync
+            if (timeDiff > 0.5) {  // If more than 1 second out of sync
                 socket.emit('play_pause_stop', { action: 'pause', room_code: room_code2 });
                 videoElement2.currentTime = data.currentTime;
                 console.log('Please wait 3 seconds');
-                await sleep(2000); // Wait for 2 seconds
+                await sleep(3500); // Wait for 2 seconds
                 socket.emit('play_pause_stop', { action: 'play', room_code: room_code2 });
-                
+
                 // videoElement2.pause();
                 // if (data.isPlaying) {
                 //     videoElement2.play();
