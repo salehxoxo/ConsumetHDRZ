@@ -436,4 +436,4 @@ if __name__ == '__main__':
     # Ensure the database is created within the application context
     with app.app_context():
         db.create_all()  # Create the SQLite tables if they don't exist
-    socketio.run(app, debug=True)
+        socketio.run(app, debug=True)
