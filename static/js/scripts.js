@@ -144,15 +144,29 @@ document.addEventListener('DOMContentLoaded', function() {
         sound.play();
     });
 
-    // Send message to the server when the "Send" button is clicked
-    document.getElementById('submit-chat').addEventListener('click', function() {
+        // Send message to the server when the "Send" button is clicked
+    document.getElementById('submit-chat').addEventListener('click', sendMessagee);
 
-        const input = document.getElementById('chat-input');
-        var message = input.value;
-        var room_code = document.getElementById('room_code').value;
-        socket.emit('send_message', { room: room_code, message: message });
-        input.value = '';  // Clear the input field
+    // Send message to the server when "Enter" key is pressed in the chat input field
+    document.getElementById('chat-input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default form submission
+            sendMessagee();
+        }
     });
+
+    // Define a reusable function for sending the message
+    function sendMessagee() {
+        const input = document.getElementById('chat-input');
+        const message = input.value;
+        const room_code = document.getElementById('room_code').value;
+
+        if (message.trim()) { // Check if the message is not just whitespace
+            socket.emit('send_message', { room: room_code, message: message });
+            input.value = '';  // Clear the input field
+        }
+    }
+
 
 
     // Get the form by its ID (make sure the form in join.html has this ID)
@@ -371,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var timeDiff = Math.abs(videoElement2.currentTime - data.currentTime);
             if (timeDiff > 0.5) {  // If more than 1 second out of sync
                 socket.emit('play_pause_stop', { action: 'pause', room_code: room_code2 });
-                videoElement2.currentTime = data.currentTime + 0.15;
+                videoElement2.currentTime = data.currentTime + 0.1;
                 // console.log('Please wait 3 seconds');
                 await sleep(4600); // Wait for 2 seconds
                 socket.emit('play_pause_stop', { action: 'play', room_code: room_code2 });
