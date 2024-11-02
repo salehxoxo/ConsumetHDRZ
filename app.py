@@ -431,6 +431,10 @@ def handle_seek_event(data):
         'currentTime': current_time
     }, room=room, broadcast=True, include_self=False)
 
+@socketio.on('sync_screen')
+def sync_screen(data):
+    emit('syncc_screen', data, room=data['room_code'])
+
 
 if __name__ == '__main__':
     # Ensure the database is created within the application context

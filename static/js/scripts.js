@@ -103,19 +103,36 @@ const formatTime = (seconds) => {
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
 };
-
+let lastUpdate = 0;
 const updateSeekBar = () => {
-    // console.log("HELLo")
+    const now = Date.now();
+    if (now - lastUpdate < 100) return; // Only update every 100ms
+    lastUpdate = now;
+
     const video = document.getElementById('videoPlayer');
     const seekBar = document.getElementById('seek-bar');
     const currentTimestamp = document.getElementById('current-timestamp');
-    
+
+    if (!video || !seekBar || !currentTimestamp) return;
+
     seekBar.max = video.duration;
     seekBar.value = video.currentTime;
-  
-    // Update the current timestamp display
     currentTimestamp.textContent = formatTime(video.currentTime);
 };
+
+
+// const updateSeekBar = () => {
+//     // console.log("HELLo")
+//     const video = document.getElementById('videoPlayer');
+//     const seekBar = document.getElementById('seek-bar');
+//     const currentTimestamp = document.getElementById('current-timestamp');
+    
+//     seekBar.max = video.duration;
+//     seekBar.value = video.currentTime;
+  
+//     // Update the current timestamp display
+//     currentTimestamp.textContent = formatTime(video.currentTime);
+// };
   
 const seekVideo = () => {
     const video = document.getElementById('videoPlayer');
@@ -274,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     isPlaying: !videoElement.paused
                 });
             // }
-        }, 5000);
+        }, 10000);
 
 
 
@@ -384,10 +401,12 @@ document.addEventListener('DOMContentLoaded', function() {
         socket.on('sync_update', async function(data) {
             var timeDiff = Math.abs(videoElement2.currentTime - data.currentTime);
             if (timeDiff > 0.5) {  // If more than 1 second out of sync
+                socket.emit('sync_screen', {action: 'Display', room_code: room_code2});
                 socket.emit('play_pause_stop', { action: 'pause', room_code: room_code2 });
-                videoElement2.currentTime = data.currentTime + 0.1;
+                videoElement2.currentTime = data.currentTime + 0.2;
                 // console.log('Please wait 3 seconds');
                 await sleep(4600); // Wait for 2 seconds
+                socket.emit('sync_screen', {action: 'NoDisplay', room_code: room_code2});
                 socket.emit('play_pause_stop', { action: 'play', room_code: room_code2 });
 
                 // videoElement2.pause();
@@ -503,6 +522,16 @@ socket.on('play_pause_stop', function(data) {
         seekBackward();
     }
 });
+
+socket.on('syncc_screen', function(data){
+    const syncDisplay = document.getElementById("sync-overlay");
+    if (data.action === 'Display') {
+        syncDisplay.style.display = "flex";
+    } else if (data.action === 'NoDisplay') {
+        syncDisplay.style.display = "none";
+    }
+});
+
 
 
 function loadVideo(src, videoElement) {

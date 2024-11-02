@@ -208,6 +208,27 @@ video::-webkit-media-controls-fullscreen-button {
   left: 0;
 }
 
+#sync-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10; /* Make sure it appears above the video */
+  display: none;
+}
+
+#sync-overlay h2 {
+  font-size: 24px;
+  text-align: center;
+  margin: 0;
+}
+
 #video-chat-container:-webkit-full-screen #top-overlay,
 #video-chat-container:-webkit-full-screen #bottom-overlay {
   position: fixed;
