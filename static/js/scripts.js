@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     isPlaying: !videoElement.paused
                 });
             // }
-        }, 10000);
+        }, 6000);
 
 
 
@@ -401,20 +401,20 @@ document.addEventListener('DOMContentLoaded', function() {
         socket.on('sync_update', async function(data) {
             var timeDiff = Math.abs(videoElement2.currentTime - data.currentTime);
             if (timeDiff > 0.5) {  // If more than 1 second out of sync
-                socket.emit('sync_screen', {action: 'Display', room_code: room_code2});
-                socket.emit('play_pause_stop', { action: 'pause', room_code: room_code2 });
-                videoElement2.currentTime = data.currentTime + 0.2;
+                // socket.emit('sync_screen', {action: 'Display', room_code: room_code2});
+                // socket.emit('play_pause_stop', { action: 'pause', room_code: room_code2 });
+                videoElement2.currentTime = data.currentTime + 0.5;
                 // console.log('Please wait 3 seconds');
-                await sleep(4600); // Wait for 2 seconds
-                socket.emit('sync_screen', {action: 'NoDisplay', room_code: room_code2});
-                socket.emit('play_pause_stop', { action: 'play', room_code: room_code2 });
+                // await sleep(4600); // Wait for 2 seconds
+                // socket.emit('sync_screen', {action: 'NoDisplay', room_code: room_code2});
+                // socket.emit('play_pause_stop', { action: 'play', room_code: room_code2 });
 
                 // videoElement2.pause();
-                // if (data.isPlaying) {
-                //     videoElement2.play();
-                // } else {
-                //     videoElement2.pause();
-                // }
+                if (data.isPlaying) {
+                    videoElement2.play();
+                } else {
+                    videoElement2.pause();
+                }
             }
         });
 
