@@ -20,14 +20,30 @@ function sleep(ms) {
 const toggleChat = () => {
     const noti2 = document.getElementById('chat-toggle-btn');
     const chatContainer = document.getElementById('chat-container0');
+    const chatInput = document.getElementById('chat-input');  // Input field to focus
     if (flag) {
         chatContainer.style.display = 'none'; // Hide chat
     } else if (!flag) {
         chatContainer.style.display = 'block'; // Show chat
         noti2.style.backgroundColor = '';
+
+        // Focus the input field if chat is shown
+        chatInput.focus();
     }
     flag = !flag;
 };
+
+// Toggle chat using 'T' key
+document.addEventListener('keydown', (event) => {
+
+    if (event.key === '`' || event.key === '`') {
+        if (document.fullscreenElement){
+            event.preventDefault();
+            toggleChat();
+        }
+
+    }
+});
 
 const toggleFullScreen = async () => {
     const container = document.getElementById('video-chat-container');
@@ -159,6 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
             noti.style.backgroundColor = 'red';
         }
         sound.play();
+        chat.scrollTop = chat.scrollHeight;
     });
 
         // Send message to the server when the "Send" button is clicked
@@ -182,6 +199,8 @@ document.addEventListener('DOMContentLoaded', function() {
             socket.emit('send_message', { room: room_code, message: message });
             input.value = '';  // Clear the input field
         }
+        // const chat = document.getElementById('chat');
+        // chat.scrollTop = chat.scrollHeight;
     }
 
 
@@ -278,6 +297,11 @@ document.addEventListener('DOMContentLoaded', function() {
             videoElement.pause();
         }
 
+        // Emit play/pause event on video click
+        videoElement.addEventListener('click', () => {
+            socket.emit('play_pause_stop', { action: 'playpause', room_code: room_code6 });
+        });
+
 
         // player.style.display = 'block';
         // socket.emit('sync_room_event');
@@ -365,14 +389,31 @@ document.addEventListener('DOMContentLoaded', function() {
         
         socket.on('video_src_set', function(data) {
 
-            const videoElement3 = document.getElementById('videoPlayer');
-            let room_code = document.getElementById('room_code').value;
+            location.reload();
+
+            // const videoElement3 = document.getElementById('videoPlayer');
+            // let room_code = document.getElementById('room_code').value;
+
+            // var availableResolutionsStr = document.getElementById("res").value;
+            // const availableResolutions = JSON.parse(availableResolutionsStr);
+            // function populateResolutionList() {
+            //     const resolutionList = document.getElementById('resolutionList');
+            //     resolutionList.innerHTML = ''; // Clear the current list
+        
+            //     // Add each resolution to the list
+            //     availableResolutions.forEach(source => {
+            //         const listItem = document.createElement('li');
+            //         listItem.innerHTML = `<a class="dropdown-item" href="#" onclick="changeResolution('${source}')">${source}</a>`;
+            //         resolutionList.appendChild(listItem);
+            //     });
+            // }
+
             // console.log('fu k2', data, room_code);
             // if ((data.videoSrc) && (data.room_code == room_code)) {  
             //     loadVideo(data.videoSrc, videoElement3);
             // }
-            loadVideo(data.videoSrc, videoElement3);
-            videoElement3.pause();
+            // loadVideo(data.videoSrc, videoElement3);
+            // videoElement3.pause();
         });
         // player2.style.display = 'block';
 
@@ -382,6 +423,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('chat-toggle-btn').addEventListener('click', () => {
             toggleChat();
         });
+        
         videoElement2.addEventListener('timeupdate', updateSeekBar);
 
                 // Update the seek bar as the video plays
@@ -416,6 +458,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     videoElement2.pause();
                 }
             }
+        });
+
+        // Emit play/pause event on video click
+        videoElement2.addEventListener('click', () => {
+            socket.emit('play_pause_stop', { action: 'playpause', room_code: room_code2 });
         });
 
         // videoElement2.addEventListener('play', function() {
@@ -484,6 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('backward-btn').onclick = function() {
         socket.emit('play_pause_stop', { action: 'backward', room_code: room_code3 });
     };
+
     // document.getElementById('backward-btn').onclick = function() {
     //     seekBar.addEventListener('input', seekVideo);
     //     socket.emit('play_pause_stop', { action: 'backward', room_code: room_code3 });

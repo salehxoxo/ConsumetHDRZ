@@ -23,6 +23,7 @@
     </div> -->
     <input type="hidden" value="{{room_code}}" id="room_code">
     <input type="hidden" value="{{urll}}" id="videoSrcInput2">
+    <input type="hidden" value="{{availableResolutions}}" id="res">
 
 
 
@@ -32,7 +33,7 @@
         <div class="row" id="video-chat-container">
 
             <!-- Video Player Section -->
-            <div class="col-7 col-md-9 mb-lg-0 mb-3">
+            <div id= "videoo" class="col-7 col-md-9 mb-lg-0 mb-3">
                 <div class="position-relative">
                     <div class="ratio ratio-16x9">
                         <video id="videoPlayer" class="rounded rounded-3 bg-dark"
@@ -94,11 +95,14 @@
                                 <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" id="resolutionDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     Res
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="resolutionDropdown">
-                                    <li><a class="dropdown-item" href="#">360p</a></li>
-                                    <li><a class="dropdown-item" href="#">480p</a></li>
-                                    <li><a class="dropdown-item" href="#">720p</a></li>
-                                    <li><a class="dropdown-item" href="#">1080p</a></li>
+                                <ul id="resolutionList" class="dropdown-menu dropdown-menu-end" aria-labelledby="resolutionDropdown">
+                                    {% for source in availableResolutions2 %}
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="changeResolution('{{ source }}')">
+                                            {{ source }}
+                                        </a>
+                                    </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -140,6 +144,37 @@
 
 
 <script src="/static/js/scripts.js"></script>
+<script>
+    function changeResolution(resolution) {
+    var room_code8 = document.getElementById("room_code").value;
+    var videoElement5 = document.getElementById('videoPlayer');
+    var time = videoElement5.currentTime;
+    var availableResolutionsStr = document.getElementById("res").value;
+    var availableResolutions = JSON.parse(availableResolutionsStr);
+    console.log(availableResolutions)
+    var link = availableResolutions[resolution]
+    console.log(link)
+    if (availableResolutions[resolution]) {
+        loadVideo(availableResolutions[resolution], videoElement5);
+        videoElement5.currentTime = time;
+        // videoElement5.play()
+        // socket.emit('epi_set', {urlll: link, room_code: room_code8});
+    } else {
+        console.error('Resolution not available:', resolution);
+    }
+}
+
+function loadVideo(src, videoElement) {
+    console.log(src)
+    if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(src);
+        hls.attachMedia(videoElement);
+    } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+        videoElement.src = src;
+    }
+}
+</script>
 </body>
 
 </html>

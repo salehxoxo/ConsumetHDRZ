@@ -80,6 +80,7 @@ class RoomVideoSource(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room_code = db.Column(db.String(10), unique=True, nullable=False)
     video_source = db.Column(db.String(555), nullable=False)
+    available_resolutions = db.Column(db.Text, nullable=True)  # Store JSON as Text
 
 def generate_room_code(length=3):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
@@ -179,6 +180,8 @@ def the_room(anime_id):
     
     # Store available resolutions
     available_resolutions = {source['quality']: source['url'] for source in sources}
+    
+    # res_global = available_resolutions
 
     if available_resolutions.get('720p'):
         Link = available_resolutions.get('720p')
@@ -194,8 +197,11 @@ def the_room(anime_id):
         existing_room = RoomVideoSource.query.filter_by(room_code=room_code).first()
         if existing_room:
             existing_room.video_source = Link
+            # existing_room.available_resolutions = "[]"  # Empty list in JSON format
+            existing_room.available_resolutions = json.dumps(available_resolutions)
+            print("I EXIST")
         else:
-            new_room = RoomVideoSource(room_code=room_code, video_source=Link)
+            new_room = RoomVideoSource(room_code=room_code, video_source=Link, available_resolutions=json.dumps(available_resolutions))
             db.session.add(new_room)
         db.session.commit()
 
@@ -203,6 +209,7 @@ def the_room(anime_id):
     socketio.emit('video_src_set', {'videoSrc': Link, 'room_code': room_code}, room=room)
 
     available_resolutions_json = json.dumps(available_resolutions)
+    # res_global_json = available_resolutions_json
     Moov = 0
 
     return render_template('Room.html', Moov=Moov, urll=Link, username=username, room_code=room_code, episodes=episodes,  availableResolutions=available_resolutions_json, availableResolutions2=available_resolutions, Res=Res)
@@ -366,14 +373,25 @@ def room2():
     room_code = request.args.get('room_code')  # Get room_code from query params
     print(room_code)
 
-    # Retrieve video source from SQLite
     room_data = RoomVideoSource.query.filter_by(room_code=room_code).first()
-    link = room_data.video_source if room_data else None
+
+    if room_data:
+        available_resolutions = json.loads(room_data.available_resolutions)
+        available_resolutions_json = json.dumps(available_resolutions)
+        link = room_data.video_source
+    else:
+        available_resolutions = []  # Default to an empty list
+        available_resolutions_json = json.dumps(available_resolutions)
+        link = None  # Default to None if no video source is found
+
+    
+
+    # link = room_data.video_source if room_data else None
 
     print(link)
     # link = room_video_sources[data['room_code']]
 
-    return render_template('room2.html', urll=link, room_code=room_code)
+    return render_template('room2.html', urll=link, room_code=room_code, availableResolutions=available_resolutions_json, availableResolutions2=available_resolutions)
 
 @socketio.on('play_pause_stop')
 def handle_play_pause_stop(data):

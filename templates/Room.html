@@ -16,12 +16,19 @@
     </div> -->
     <p>If the video keeps skipping, that means its not in sync. pause for 2 seconds and play again.</p>
 
+    <input type="hidden" value="{{room_code}}" id="room_code">
+    <input type="hidden" value="{{availableResolutions}}" id="res">
+    <input type="hidden" value="{{Res}}" id="res_current">
+    <input type="hidden" value="{{urll}}" id="videoSrcInput">
+    <input type="hidden" value="{{Moov}}" id="isMovie">
+    <input type="hidden" value="{{mov_id}}" id="moviee_id">
+
 
     <div class="p-3">
         <div class="row" id="video-chat-container">
 
             <!-- Video Player Section -->
-            <div class="col-7 col-md-9 mb-lg-0 mb-3">
+            <div id= "videoo" class="col-7 col-md-9 mb-lg-0 mb-3">
                 <div class="position-relative">
                     <div class="ratio ratio-16x9">
                         <video id="videoPlayer" class="rounded rounded-3 bg-dark"
@@ -84,12 +91,16 @@
                                     Res
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="resolutionDropdown">
-                                    <li><a class="dropdown-item" href="#">360p</a></li>
-                                    <li><a class="dropdown-item" href="#">480p</a></li>
-                                    <li><a class="dropdown-item" href="#">720p</a></li>
-                                    <li><a class="dropdown-item" href="#">1080p</a></li>
+                                    {% for source in availableResolutions2 %}
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="changeResolution('{{ source }}')">
+                                            {{ source }}
+                                        </a>
+                                    </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
+                            
                         </div>
 
                     </div>
@@ -119,12 +130,7 @@
 
 
 
-    <input type="hidden" value="{{room_code}}" id="room_code">
-    <input type="hidden" value="{{availableResolutions}}" id="res">
-    <input type="hidden" value="{{Res}}" id="res_current">
-    <input type="hidden" value="{{urll}}" id="videoSrcInput">
-    <input type="hidden" value="{{Moov}}" id="isMovie">
-    <input type="hidden" value="{{mov_id}}" id="moviee_id">
+
 
     <!-- <div id="chat">
         <div id="chat-messages"></div>
@@ -157,7 +163,7 @@
             {% endfor %}
         </ul>
 
-        <h2>Resolutions:</h2>
+        <!-- <h2>Resolutions:</h2>
         <ul id="resolution-list">
             {% for source in availableResolutions2 %}
             <li>
@@ -166,7 +172,7 @@
                 </button>
             </li>
             {% endfor %}
-        </ul>
+        </ul> -->
     </div>
 
 
@@ -339,7 +345,7 @@ function changeResolution(resolution) {
         loadVideo(availableResolutions[resolution], videoElement5);
         videoElement5.currentTime = time;
         // videoElement5.play()
-        socket.emit('epi_set', {urlll: link, room_code: room_code8});
+        // socket.emit('epi_set', {urlll: link, room_code: room_code8});
     } else {
         console.error('Resolution not available:', resolution);
     }
