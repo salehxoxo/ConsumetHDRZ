@@ -22,6 +22,7 @@
     <input type="hidden" value="{{urll}}" id="videoSrcInput">
     <input type="hidden" value="{{Moov}}" id="isMovie">
     <input type="hidden" value="{{mov_id}}" id="moviee_id">
+    <input type="hidden" value="{{anime_id}}" id="anime_id">
 
 
     <div class="p-3">
@@ -299,37 +300,48 @@ function episodeSelected() {
 
 
 
-// Function to switch episode
-function switchEpisode(episodeId) {
-    // Emit a socket event to switch the video source
-    var q = document.getElementById('res_current').value;
-    var link;
-    videoElement = document.getElementById('videoPlayer');
-    // console.log(res_current)
-    console.log('nig balls')
-    var room_code = document.getElementById("room_code").value;
-    // socket.emit('switch_episode', { episode_id: episodeId, room_code: room_code, res_current:res_current });
+// // Function to switch episode
+// function switchEpisode(episodeId) {
+//     // Emit a socket event to switch the video source
+//     var q = document.getElementById('res_current').value;
+//     var link;
+//     videoElement = document.getElementById('videoPlayer');
+//     // console.log(res_current)
+//     console.log('nig balls')
+//     var room_code = document.getElementById("room_code").value;
+//     // socket.emit('switch_episode', { episode_id: episodeId, room_code: room_code, res_current:res_current });
 
-    fetch(`https://consume2.vercel.app/anime/gogoanime/watch/${episodeId}`)
-    .then(response => response.json())
-    .then(episodeData => {
-        var sources = episodeData.sources;
+//     fetch(`https://consume2.vercel.app/anime/gogoanime/watch/${episodeId}`)
+//     .then(response => response.json())
+//     .then(episodeData => {
+//         var sources = episodeData.sources;
         
-        var source720p = sources.find(source => source.quality === q);
-        // console.log(source720p.url)
-        if (source720p) {
-            link = source720p.url
-            loadVideo(source720p.url, videoElement);
-            // videoPlayer.src = source720p.url;
-            // videoPlayer.load();
-            socket.emit('epi_set', {urlll: link, room_code: room_code});
-        }
-    })
-    .catch(error => console.error('Error fetching episode:', error));
+//         var source720p = sources.find(source => source.quality === q);
+//         // console.log(source720p.url)
+//         if (source720p) {
+//             link = source720p.url
+//             loadVideo(source720p.url, videoElement);
+//             // videoPlayer.src = source720p.url;
+//             // videoPlayer.load();
+//             socket.emit('epi_set', {urlll: link, room_code: room_code});
+//         }
+//     })
+//     .catch(error => console.error('Error fetching episode:', error));
 
 
     
+// }
+
+// Function to switch episode
+function switchEpisode(episodeId) {
+    var animeId = document.getElementById("anime_id").value;
+    // var room_code = document.getElementById("room_code").value;
+
+    // Redirect to `/the_room/<anime_id>` with episodeId as a query parameter to re-render the page
+    window.location.href = `/the_room/${animeId}?episode_id=${episodeId}`;
 }
+
+
 
 
 function changeResolution(resolution) {

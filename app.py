@@ -161,10 +161,11 @@ def movie_page():
 
 import requests
 
-@app.route('/the_room/<anime_id>')
+@app.route('/the_room/<anime_id>', methods=['GET'])
 def the_room(anime_id):
     username = session.get('username')
     room_code = session.get('room_code')
+    episode_id = request.args.get('episode_id')
 
     # Fetch episode list from the API
     info_url = f'https://consume2.vercel.app/anime/gogoanime/info/{anime_id}'
@@ -172,9 +173,12 @@ def the_room(anime_id):
     anime_info = response.json()
 
     episodes = anime_info.get('episodes', [])
+
+    if episode_id:
+        urll = f'https://consume2.vercel.app/anime/gogoanime/watch/{episode_id}'
+    else:
+        urll = f'https://consume2.vercel.app/anime/gogoanime/watch/{anime_id}-episode-1'
     
-    # Fetch the sources for the first episode to get available resolutions
-    urll = f'https://consume2.vercel.app/anime/gogoanime/watch/{anime_id}-episode-1'
     response = requests.get(urll, verify=False)
     sources = response.json().get('sources', [])
     
@@ -212,7 +216,7 @@ def the_room(anime_id):
     # res_global_json = available_resolutions_json
     Moov = 0
 
-    return render_template('Room.html', Moov=Moov, urll=Link, username=username, room_code=room_code, episodes=episodes,  availableResolutions=available_resolutions_json, availableResolutions2=available_resolutions, Res=Res)
+    return render_template('Room.html', anime_id=anime_id, Moov=Moov, urll=Link, username=username, room_code=room_code, episodes=episodes,  availableResolutions=available_resolutions_json, availableResolutions2=available_resolutions, Res=Res)
 
 @app.route('/the_room')
 def the_room2():
