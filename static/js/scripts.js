@@ -583,12 +583,15 @@ socket.on('syncc_screen', function(data){
 
 
 function loadVideo(src, videoElement) {
+    // Update the URL to include the src parameter
+    const urlWithSrc = `https://m3u8-proxy-cors-kappa-red.vercel.app/cors?url=${encodeURIComponent(src)}&headers={"referer": "https://s3embtaku.pro"}`;
+
     if (Hls.isSupported()) {
         var hls = new Hls();
-        hls.loadSource(src);
+        hls.loadSource(urlWithSrc);
         hls.attachMedia(videoElement);
     } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-        videoElement.src = src;
+        videoElement.src = urlWithSrc;
     }
 }
 
