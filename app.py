@@ -167,16 +167,17 @@ def the_room(anime_id):
     room_code = session.get('room_code')
     episode_id = request.args.get('episode_id')
 
-    # Fetch episode list from the API
-    info_url = f'https://consume2.vercel.app/anime/gogoanime/info/{anime_id}'
-    response = requests.get(info_url, verify=False)
-    anime_info = response.json()
-
-    episodes = anime_info.get('episodes', [])
-
+    
     if episode_id:
         urll = f'https://consume2.vercel.app/anime/gogoanime/watch/{episode_id}'
     else:
+            # Fetch episode list from the API
+        info_url = f'https://consume2.vercel.app/anime/gogoanime/info/{anime_id}'
+        response = requests.get(info_url, verify=False)
+        anime_info = response.json()
+
+        episodes = anime_info.get('episodes', [])
+
         urll = f'https://consume2.vercel.app/anime/gogoanime/watch/{anime_id}-episode-1'
     
     response = requests.get(urll, verify=False)
