@@ -14,7 +14,8 @@
         <video id="videoPlayer" width="800" height="450" controls></video>
         <p id="test">Hello</p>
     </div> -->
-    <p>If the video keeps skipping, that means its not in sync. pause for 2 seconds and play again.</p>
+    <p>` to toggle chat</p>
+    
 
     <input type="hidden" value="{{room_code}}" id="room_code">
     <input type="hidden" value="{{availableResolutions}}" id="res">
@@ -23,10 +24,14 @@
     <input type="hidden" value="{{Moov}}" id="isMovie">
     <input type="hidden" value="{{mov_id}}" id="moviee_id">
     <input type="hidden" value="{{anime_id}}" id="anime_id">
+    <input type="hidden" value="{{username}}" id="user">
+
 
 
     <div class="p-3">
         <div class="row" id="video-chat-container">
+
+
 
             <!-- Video Player Section -->
             <div id= "videoo" class="col-7 col-md-9 mb-lg-0 mb-3">
@@ -45,6 +50,11 @@
 
                     <!-- Top Overlay -->
                     <div id="top-overlay" class="w-100 p-2 d-flex align-items-center justify-content-between">
+                        <!-- Toggle Buttons Above Chat and Logs -->
+                        <div class="toggle-buttons mb-2">
+                            <button id="toggle-chat" class="btn btn-secondary">Chat</button>
+                            <button id="toggle-logs" class="btn btn-secondary">Logs</button>
+                        </div>
                         <div>
                             <span id="online-indicator" class="badge bg-danger text-white"></span>
                         </div>
@@ -119,6 +129,11 @@
                     <div id="chat-input-container" class="flex-grow input-group">
                         <input id="chat-input" class="form-control" placeholder="Message" maxlength="500" type="text" />
                         <button type="button" id="submit-chat" class="btn btn-outline-secondary">Send</button>
+                    </div>
+
+
+                    <div id="logs-container" class="vstack" style="display: none;">
+                        <div id="logs" class="rounded border border-secondary flex-grow-1 mb-3 p-3">Logs will appear here...</div>
                     </div>
                 </div>
             </div>
@@ -211,6 +226,21 @@
 <script src="/static/js/scripts.js"></script>
 
 <script>
+
+document.getElementById("toggle-chat").addEventListener("click", () => {
+    document.getElementById("chat").style.display = "block";
+    document.getElementById("chat-input-container").style.display = "flex";
+    
+    document.getElementById("logs-container").style.display = "none";
+});
+
+document.getElementById("toggle-logs").addEventListener("click", () => {
+    document.getElementById("chat").style.display = "none";
+    document.getElementById("chat-input-container").style.display = "none";
+    document.getElementById("logs-container").style.display = "block";
+});
+
+
 let selectedSeason = null;
 function selectSeason(seasonNumber, episodeCount) {
             // Show the episode selector

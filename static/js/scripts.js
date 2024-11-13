@@ -521,15 +521,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     let room_code3 = document.getElementById('room_code').value;
+    let userr = document.getElementById('user').value;
     // const seekBar = document.getElementById('seek-bar');
     document.getElementById('play-btn').onclick = function() {
-        socket.emit('play_pause_stop', { action: 'playpause', room_code: room_code3 });
+        socket.emit('play_pause_stop', { action: 'playpause', user: userr, room_code: room_code3 });
     };
     document.getElementById('forward-btn').onclick = function() {
-        socket.emit('play_pause_stop', { action: 'forward', room_code: room_code3 });
+        socket.emit('play_pause_stop', { action: 'forward', user: userr, room_code: room_code3 });
     };
     document.getElementById('backward-btn').onclick = function() {
-        socket.emit('play_pause_stop', { action: 'backward', room_code: room_code3 });
+        socket.emit('play_pause_stop', { action: 'backward', user: userr, room_code: room_code3 });
     };
 
     // document.getElementById('backward-btn').onclick = function() {
@@ -551,6 +552,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 socket.on('play_pause_stop', function(data) {
+
     if (data.action === 'playpause') {
         togglePlayback(); 
     }
@@ -569,6 +571,13 @@ socket.on('play_pause_stop', function(data) {
     if (data.action === 'backward') {
         seekBackward();
     }
+
+    const message = data.message;
+    const logsContainer = document.getElementById('logs');
+    const logMessage = document.createElement('div');
+    logMessage.textContent = message;
+    logsContainer.appendChild(logMessage);
+    logsContainer.scrollTop = logsContainer.scrollHeight;
 });
 
 socket.on('syncc_screen', function(data){

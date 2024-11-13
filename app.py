@@ -377,6 +377,8 @@ def handle_send_message(data):
 @app.route('/room2')
 def room2():
 
+    username = session.get('username')
+
     room_code = request.args.get('room_code')  # Get room_code from query params
     print(room_code)
 
@@ -398,11 +400,17 @@ def room2():
     print(link)
     # link = room_video_sources[data['room_code']]
 
-    return render_template('room2.html', urll=link, room_code=room_code, availableResolutions=available_resolutions_json, availableResolutions2=available_resolutions)
+    return render_template('room2.html', username=username, urll=link, room_code=room_code, availableResolutions=available_resolutions_json, availableResolutions2=available_resolutions)
 
 @socketio.on('play_pause_stop')
 def handle_play_pause_stop(data):
-    # print(f"Action: {data['action']} by {data['username']} in room {data['room_code']}")
+    msg = f"Action: {data['action']} by {data['user']}"
+    
+    # Add the message to the data
+    data['message'] = msg
+    
+    # Print the message for logging purposes
+    print(msg)
     print("wtf2")
     emit('play_pause_stop', data, room=data['room_code'])
 

@@ -267,6 +267,20 @@ video::-webkit-media-controls-fullscreen-button {
   width: 400px;
 }
 
+#video-chat-container:-webkit-full-screen #logs-container {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 400px;
+}
+
+#video-chat-container:fullscreen #logs-container {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 400px;
+}
+
 #chat-container {
   height: 100%;
 }
